@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<!--
+*
+*  Copyright 2015 Robert Campbell. All rights reserved.
+* 
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+*
+*-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>myServiceWorker</title>
+    <meta name="author" content="Rob Campbell" />
+    <meta name="description" content="General gist using the Service Worker API" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Add to homescreen and theme color for Android Chrome -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta id="theme-color" name="theme-color" content="#CD4C4C" />
+
+    <!-- Add to homescreen for iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="myServiceWorker" />
+
+    <!-- Homescreen touch icons for iOS -->
+    <link rel="apple-touch-icon" href="images/launcher-icons/icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="images/launcher-icons/icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="images/launcher-icons/icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="images/launcher-icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/launcher-icons/icon-180x180.png" />
+
+    <!--build:css css/style.min.css-->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!--/build-->
+</head>
+
+<body>
+    <div class="wrapper">
+        <p class="info">Based on a Service Worker article by Matt Gaunt found <a href="http://www.html5rocks.com/en/tutorials/service-worker/introduction">here</a></p>
+        <img src="images/grapes-in-hand.jpg" alt="A close-up view of a pair of human hands presenting a bunch of black grapes"/>
+    </div>
+    <script src="js/serviceworker-cache-polyfill.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/demos/myServiceWorkerGist/src/sw.js').then(function(registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        }
+
+    </script>
+</body>
+
+</html>
+

@@ -1,0 +1,34 @@
+CACHE MANIFEST
+# rev 2 - 2015-05-13T16:00:07.680Z
+
+CACHE:
+css/style.min.css
+fonts/Lato/Lato-Hairline.eot
+fonts/Lato/Lato-Hairline.ttf
+fonts/Lato/Lato-Hairline.woff
+fonts/Lato/Lato-Light.eot
+fonts/Lato/Lato-Light.ttf
+fonts/Lato/Lato-Light.woff
+fonts/Lato/Lato-Medium.eot
+fonts/Lato/Lato-Medium.ttf
+fonts/Lato/Lato-Medium.woff
+fonts/Lato/Lato-Thin.eot
+fonts/Lato/Lato-Thin.ttf
+fonts/Lato/Lato-Thin.woff
+images/launcher-icons/icon-120x120.png
+images/launcher-icons/icon-144x144.png
+images/launcher-icons/icon-152x152.png
+images/launcher-icons/icon-180x180.png
+images/launcher-icons/icon-192x192.png
+images/launcher-icons/icon-36x36.png
+images/launcher-icons/icon-48x48.png
+images/launcher-icons/icon-60x60.png
+images/launcher-icons/icon-72x72.png
+images/launcher-icons/icon-76x76.png
+images/launcher-icons/icon-96x96.png
+index.html
+js/animated-pane.min.js
+manifest.json
+
+NETWORK:
+*
