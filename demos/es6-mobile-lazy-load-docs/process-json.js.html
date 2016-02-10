@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: process-json.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: process-json.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *
+ *  Copyright 2016 Robert Campbell. All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+const processJson = (json) => {
+
+    var html = `&lt;article class="plant-entry" id="${json._id}">`;
+
+    if (json.name.plantname) {
+        html += `&lt;h1 class="plantname">${json.name.plantname}&lt;/h1>`;
+    }
+
+    if (json.name.commonname) {
+        html += `&lt;h2 class="commonname">${json.name.commonname}&lt;/h2>`;
+    }
+
+    if (json.name['other-commonnames']) {
+        html += `&lt;div class="othercommonnames">
+                    &lt;h3>Other common names&lt;/h3>
+                    &lt;ul>`;
+
+        json.name['other-commonnames'].name.forEach((cn) => {
+            html += `&lt;li>${cn}&lt;/li>`;
+        });
+
+        html += `&lt;/ul>&lt;/div>`;
+    }
+
+    if (json.family) {
+        html += `&lt;div class="family">
+                    &lt;h3>Family&lt;/h3>
+                    &lt;p>${json.family}&lt;/p>
+                 &lt;/div>`;
+    }
+
+    if (json.synonyms) {
+        html += `&lt;div class="synonyms">
+                    &lt;h3>synonyms&lt;/h3>
+                    &lt;p>${json.synonyms}&lt;/p>
+                &lt;/div>`;
+    }
+
+    if (json.genus) {
+        html += `&lt;div class="genus">
+                    &lt;h3>genus&lt;/h3>
+                    &lt;p>${json.genus}&lt;/p>
+                &lt;/div>`;
+    }
+
+    if (json.details) {
+        html += `&lt;div class="details">
+                    &lt;h3>details&lt;/h3>
+                    &lt;p>${json.details}&lt;/p>
+                &lt;/div>`;
+    }
+
+    if (json.characteristics) {
+        html += `&lt;div class="characteristics">
+                    &lt;h2>Characteristics&lt;/h2>`;
+
+        if (json.characteristics.Foliage) {
+            html += `&lt;h3>Foliage&lt;/h3>
+                     &lt;p class="foliage">${json.characteristics.Foliage}&lt;/p>`;
+        }
+
+        if (json.characteristics.Habit) {
+            html += `&lt;h3>Habit&lt;/h3>
+                     &lt;p class="habit">${json.characteristics.Habit}&lt;/p>`;
+        }
+        if (json.characteristics.Toxicity) {
+            html += `&lt;h3>Toxicity&lt;/h3>
+                     &lt;p class="toxicity">${json.characteristics.Toxicity}&lt;/p>`;
+        }
+        html += `&lt;/div>`;
+    }
+
+    if (json.color.foliagecolour) {
+        html += `&lt;div class="colour">
+                    &lt;h2>colour&lt;/h2>
+                    &lt;h3>foliage colour&lt;/h3>
+                    &lt;ul>`;
+
+        if (json.color.foliagecolour.spring) {
+            html += `&lt;li>${json.color.foliagecolour.spring}&lt;/li>`;
+        }
+
+        if (json.color.foliagecolour.summer) {
+            html += `&lt;li>${json.color.foliagecolour.summer}&lt;/li>`;
+        }
+
+        if (json.color.foliagecolour.autumn) {
+            html += `&lt;li>${json.color.foliagecolour.autumn}&lt;/li>`;
+        }
+
+        html += `&lt;/ul>&lt;/div>`;
+    }
+
+    if (json.sunlight) {
+        html += `&lt;div class="sunlight">
+                    &lt;h2>sunlight&lt;/h2>`;
+
+        if (json.sunlight.sun) {
+            html += `&lt;p class="sun">${json.sunlight.sun}&lt;/p>`;
+        }
+
+        if (json.sunlight.aspect) {
+            html += `&lt;h3 class="aspect-title">Aspect&lt;/h3>
+                     &lt;ul class="aspect">`;
+
+            json.sunlight.aspect.forEach((asp) => {
+                html += `&lt;li>${asp}&lt;/li>`;
+            });
+            html += `&lt;/ul>`;
+        }
+
+        if (json.sunlight.exposure) {
+            html += `&lt;h3 class="exposure-title">Exposure&lt;/h3>
+                     &lt;p class="exposure">${json.sunlight.exposure}&lt;/p>`;
+        }
+
+        html += `&lt;/div>`;
+    }
+
+    if (json.size) {
+        html += `&lt;div class="size">
+                      &lt;h2>size&lt;/h2>`;
+
+        if (json.size.height) {
+            html += `&lt;p>&lt;span>height: &lt;/span>${json.size.height}&lt;/p>`;
+        }
+
+        if (json.size.spread) {
+            html += `&lt;p>&lt;span>spread: &lt;/span>${json.size.spread}&lt;/p>`;
+        }
+        if (json.size['time-to-height']) {
+            html += `&lt;p>&lt;span>time to height: &lt;/span>
+                        ${json.size['time-to-height']}&lt;/p>`;
+        }
+
+        html += '&lt;/div>';
+    }
+
+    if (json['how-to-grow']) {
+        html += `&lt;div class="how-to-grow">
+                    &lt;h2>how to grow&lt;/h2>`;
+
+        if (json['how-to-grow'].cultivation) {
+            html += `&lt;p>&lt;span>cultivation: &lt;/span>
+                        ${json['how-to-grow'].cultivation}&lt;/p>`;
+        }
+
+        if (json['how-to-grow'].propogation) {
+            html += `&lt;p>&lt;span>propogation: &lt;/span>
+                        ${json['how-to-grow'].propogation}&lt;/p>`;
+        }
+
+        html += `&lt;/div>`;
+    }
+
+    if (json['how-to-care']) {
+        html += `&lt;div class="how-to-care">
+                     &lt;h2>how to care&lt;/h2>`;
+
+        if (json['how-to-care'].pruning) {
+            html += `&lt;p>&lt;span>pruning: &lt;/span>
+                        ${json['how-to-care'].pruning}&lt;/p>`;
+        }
+        if (json['how-to-care'].pests) {
+            html += `&lt;p>&lt;span>pests: &lt;/span>'
+                        ${json['how-to-care'].pests}&lt;/p>`;
+        }
+        if (json['how-to-care'].diseases) {
+            html += `&lt;p>&lt;span>diseases: &lt;/span>
+                        ${json['how-to-care'].diseases}&lt;/p>`;
+        }
+    }
+    html += `&lt;/article>`;
+
+    return html;
+};
+
+export default processJson;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="-_param_module_param.html">param</a></li></ul><h3>Classes</h3><ul><li><a href="Button.html">Button</a></li><li><a href="Dialog.html">Dialog</a></li><li><a href="Spinner.html">Spinner</a></li></ul><h3>Namespaces</h3><ul><li><a href="RCAM.html">RCAM</a></li></ul><h3>Global</h3><ul><li><a href="global.html#processJson">processJson</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 10 2016 16:05:15 GMT+0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

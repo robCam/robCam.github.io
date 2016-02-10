@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: param.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: param.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *
+ *  Copyright 2016 Robert Campbell. All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+/**
+ * Device parameters module.&lt;br/>
+ * This module is used to normalise browser inconsistencies.&lt;br/>&lt;br/>
+ * 1. Exports the CSS vendor prefix as: &lt;code>&lt;b>cssVendorPrefix&lt;/b>&lt;/code>&lt;br/>
+ * 2. Exports the JavaScript vendor prefix for &lt;code>transitionend&lt;/code>
+ *  as: &lt;code>&lt;b>transitionEnd&lt;/b>&lt;/code>&lt;br/>
+ * 3. Exports a boolean value whether the device has touch or not as
+ *  &lt;code>&lt;b>hasTouch&lt;/b>&lt;/code>&lt;br/>
+ * 4. Exports the pointer start used (either &lt;code>touchstart&lt;/code> or
+ *  &lt;code>mousedown&lt;/code>) as &lt;code>&lt;b>pointerStart&lt;/b>&lt;/code>&lt;br/>
+ * 5. Exports the pointer move used (either &lt;code>touchmove&lt;/code> or
+ *  &lt;code>mousemove&lt;/code>) as &lt;code>&lt;b>pointerMove&lt;/b>&lt;/code>&lt;br/>
+ * 6. Exports the pointer end used (either &lt;code>touchend&lt;/code> or
+ *  &lt;code>mouseup&lt;/code>) as &lt;code>&lt;b>pointerEnd&lt;/b>&lt;/code>&lt;br/>
+ * 7. Exports either &lt;code>touchcancel&lt;/code> as
+ *  &lt;code>&lt;b>pointerCancel&lt;/b>&lt;/code>&lt;br/>
+ * 8. Exports either the &lt;code>orientationchange&lt;/code> or
+ *  &lt;code>resize&lt;/code> event as &lt;code>&lt;b>resizeEvent&lt;/b>&lt;/code>&lt;br/>
+ * @module module:./param#param
+ */
+
+/**
+ * @const {Object} - All the CSS styles available for a DOM element.
+ * @private
+ */
+const styles = window.getComputedStyle(document.documentElement, '');
+
+/**
+ * @const {Boolean} - Whether the device supports touch
+ * @private
+ */
+const hasTouch = 'ontouchstart' in document     ||
+                 (navigator.MaxTouchPoints > 0) ||
+                 (navigator.msMaxTouchPoints > 0);
+
+/**
+ * @const {Boolean} - Whether the browser is Chrome
+ * @private
+ */
+const isChrome = (/Chrome/gi).test(navigator.userAgent);
+
+// Normalize pointer events
+const pointerStart = hasTouch ? 'touchstart' : 'mousedown';
+const pointerMove  = hasTouch ? 'touchmove'  : 'mousemove';
+const pointerEnd   = hasTouch ? 'touchend'   : 'mouseup';
+
+const pointerCancel = (hasTouch) ? 'touchcancel' : '';
+
+/**
+ * @const {Boolean} - Whether orientationchange is supported
+ * @private
+ */
+const hasOrientation = window.hasOwnProperty('onorientationchange');
+
+let resizeEvent  = hasOrientation ? 'orientationchange' : 'resize';
+
+// Override 'orientationchange' on Chrome for Android.
+// See Chromium Bug Tracker (issue: 515931): https://goo.gl/IaOfQp
+if (isChrome &amp;&amp; hasTouch) resizeEvent = 'resize';
+
+/**
+ * @const {String} - The CSS vendor prefix used by the browser,
+ * e.g. &lt;code>moz | webkit | ms&lt;/code>
+ * @private
+ */
+const pre = (Array.prototype.slice
+    .call(styles)
+    .join('')
+    .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' &amp;&amp; ['', 'o'])
+)[1];
+
+/**
+ * @const {String} - The CSS vendor prefix used by the browser
+ * @example -webkit- | -moz- | -ms-
+ * @private
+ */
+const cssVendorPref = `-${pre}-`;
+
+/**
+ * Helper function to ascertain which vendor prefix is used via their API.
+ * @param {Object} transitions - Object key/value pairs.
+ * @returns {String} The prefix used by their API.
+ * @private
+ */
+const getPrefix = (transitions) => {
+    let t,
+        el = document.createElement('tempElement');
+    for (t in transitions) {
+        if (transitions.hasOwnProperty(t)) {
+            if (el.style[t] !== undefined) {
+                return transitions[t];
+            }
+        }
+    }
+    el = null;
+};
+
+/**
+ * @const {String} - The JavaScript vendor prefix used by the browser
+ * @example webkitTransitionEnd | oTransitionEnd | transitionend
+ * @private
+ */
+const transitionEnd = getPrefix({
+    'transition'      : 'transitionend',
+    'OTransition'     : 'oTransitionEnd',
+    'MozTransition'   : 'transitionend',
+    'WebkitTransition': 'webkitTransitionEnd'
+});
+
+export {
+    cssVendorPref as cssVendorPrefix,
+    transitionEnd,
+    hasTouch,
+    pointerStart,
+    pointerMove,
+    pointerEnd,
+    pointerCancel,
+    resizeEvent
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="-_param_module_param.html">param</a></li></ul><h3>Classes</h3><ul><li><a href="Button.html">Button</a></li><li><a href="Dialog.html">Dialog</a></li><li><a href="Spinner.html">Spinner</a></li></ul><h3>Namespaces</h3><ul><li><a href="RCAM.html">RCAM</a></li></ul><h3>Global</h3><ul><li><a href="global.html#processJson">processJson</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 10 2016 16:05:15 GMT+0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
