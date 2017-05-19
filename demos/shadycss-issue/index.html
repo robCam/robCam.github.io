@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>ShadyCSS issue using style placeholders - Chrome 49.0.2623.112</title>
+    <meta name="description" content="Reduced Test case for ShadyCSS issue using style placeholders" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+    <template id="my-element-template">
+        <style>
+            :host {
+                width: var(--my-element-width, 80px);
+                height: var(--my-element-height, 80px);
+                display: block;
+                margin-bottom: 10px;
+            }
+            .in-shadow {
+                display: block;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background: var(--my-element-bgcolor, red);
+                border-radius: var(--my-element-border-radius, 0);
+            }
+        </style>
+        <div class="in-shadow"></div>
+    </template>
+
+    <div class="wrapper">
+        <my-element></my-element>
+        <my-element></my-element>
+    </div>
+
+    <script type="text/javascript">
+
+    (function() {
+
+        const supportsCustomElementsV1 = 'customElements' in window;
+        const supportsShadowDOMV1 = !!HTMLElement.prototype.attachShadow;
+
+        function loadScript(src) {
+            return new Promise(function(resolve, reject) {
+                const script = document.createElement('script');
+                /*script.async = true;*/
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Lazy load the polyfill if necessary.
+        if (!supportsCustomElementsV1 && !supportsShadowDOMV1) {
+            loadScript('js/third_party/shadydom.min.js')
+                .then(() => {
+                    loadScript('js/third_party/scoping-shim.min.js')
+                })
+                .then(() => {
+                    loadScript('js/third_party/custom-elements.min.js')
+                })
+                .then(() => {
+                    loadScript('js/shadycss-issue.js')
+                })
+                .catch(err => {
+                    console.warn(err);
+                });
+        } else {
+            loadScript('js/third_party/custom-elements-es5-adapter.js')
+                .then(() => {
+                    loadScript('js/shadycss-issue.js');
+                })
+                .catch(err => {
+                    console.warn(err);
+                });
+        }
+
+    }());
+
+    </script>
+</body>
+
+</html>

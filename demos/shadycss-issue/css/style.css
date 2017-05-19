@@ -1,0 +1,14 @@
+.wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: hsl(0, 0%, 95%);
+}
+
+/* Override the default styling */
+my-element {
+    --my-element-width: 160px;
+    --my-element-height: 160px;
+    --my-element-bgcolor: blue;
+    --my-element-border-radius: 50%;
+}
